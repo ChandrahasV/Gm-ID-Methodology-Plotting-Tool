@@ -26,7 +26,7 @@ def lookup_vgs(nch_data, **kwargs):
     except Exception as e:
         print(f"Error extracting values: {e}")
         print("Available fields in data:", nch_data.dtype.names)
-        return None
+        return np.array([])
 
     defaults = {
         'L': np.min(L_values),
@@ -53,7 +53,7 @@ def lookup_vgs(nch_data, **kwargs):
         mode = 2
     else:
         print('Invalid syntax or usage mode! Please check the documentation.')
-        return None
+        return np.array([])
     
     if debug:
         print(f"\nOperating in mode {mode}")
@@ -70,7 +70,7 @@ def lookup_vgs(nch_data, **kwargs):
         ratio_data = np.atleast_1d(params['GM_ID'])
     else:
         print('Invalid syntax or usage mode! Please check the documentation.')
-        return None
+        return np.array([])
 
     if mode == 1:
         VGS = VGS_values
@@ -82,11 +82,11 @@ def lookup_vgs(nch_data, **kwargs):
         
         if ratio is None:
             print("Error: lookup function returned None")
-            return None
+            return np.array([])
             
     else:  # mode 2
         step = VGS_values[1] - VGS_values[0]
-        VSB = np.arange(np.min(VSB_values), np.max(VSB_values) + step, step)  # Changed range direction
+        VSB = np.arange(np.min(VSB_values), np.max(VSB_values) + step, step)
         VGS = params['VGB'] - VSB
         VDS = params['VDB'] - VSB
         
@@ -108,7 +108,7 @@ def lookup_vgs(nch_data, **kwargs):
         
         if np.sum(valid_points) == 0:
             print("Error: No valid operating points found within device limits")
-            return None
+            return np.array([])
         
         # Apply filtering
         VGS = VGS[valid_points]
@@ -134,7 +134,7 @@ def lookup_vgs(nch_data, **kwargs):
                       
         if ratio is None:
             print("Error: lookup function returned None")
-            return None
+            return np.array([])
 
         if debug:
             print("\nRatio array details:")
@@ -161,7 +161,7 @@ def lookup_vgs(nch_data, **kwargs):
         
         if len(ratio) == 0:
             print("Error: No valid ratio values after filtering")
-            return None
+            return np.array([])
 
     # Ensure ratio is 2D
     ratio = np.atleast_2d(ratio)
@@ -183,7 +183,7 @@ def lookup_vgs(nch_data, **kwargs):
 
     if len(ratio_range) < 2:
         print("Error: Not enough valid points for interpolation")
-        return None
+        return np.array([])
 
     # Sort arrays to ensure monotonic interpolation
     sort_idx = np.argsort(ratio_range)
@@ -203,7 +203,7 @@ def lookup_vgs(nch_data, **kwargs):
             print(f"Delta ratio: {delta_ratio:.3e}")
             print(f"Extrapolated result: {result:.6f}")
             
-        return result
+        return np.array([result])
 
     # Normal interpolation for other cases
     try:
@@ -216,11 +216,11 @@ def lookup_vgs(nch_data, **kwargs):
         result = interpolator(ratio_data)
         if debug:
             print(f"\nInterpolation result: {result}")
-        return np.squeeze(result)
+        return np.array(result)
     except Exception as e:
         print(f"Interpolation error: {e}")
-        return None
-    
+        return np.array([])
+
 if __name__ == "__main__":
     from scipy.io import loadmat
     
