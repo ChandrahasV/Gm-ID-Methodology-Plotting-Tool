@@ -250,7 +250,7 @@ class MainWindow(QMainWindow):
             x_value = x_min + slider_pos * (x_max - x_min)
             
             # Update label
-            self.x_value_display.setText(f"{x_value:.3f}")
+            self.x_value_display.setText(f"{x_value:.6f}")
             
             # Remove old vertical lines from first plot
             for line in self.ax1.lines:
