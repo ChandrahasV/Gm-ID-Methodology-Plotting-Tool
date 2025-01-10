@@ -98,7 +98,7 @@ Both `lookup` and `lookupVGS` functions come with extensive examples demonstrati
   
 To install the dependencies, run the following command:
 ```bash
-pip install numpy scipy matplotlib PyQt5
+pip install numpy scipy scikit-learn matplotlib PyQt5
 ```
 ## .mat files
 
