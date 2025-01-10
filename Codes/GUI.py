@@ -74,8 +74,8 @@ class MainWindow(QMainWindow):
         
         self.x_slider = QSlider(Qt.Horizontal)
         self.x_slider.setMinimum(0)
-        self.x_slider.setMaximum(100)
-        self.x_slider.setTickInterval(1)
+        self.x_slider.setMaximum(10000)
+        self.x_slider.setTickInterval(100)
         self.x_slider.setTickPosition(QSlider.TicksBelow)
         self.x_slider.valueChanged.connect(self.update_slider_value)
         self.x_slider.setFixedWidth(100)
@@ -245,7 +245,7 @@ class MainWindow(QMainWindow):
         """Update the display when slider value changes and update both plots"""
         if self.current_x_data is not None:
             # Convert slider value to actual x-axis value
-            slider_pos = self.x_slider.value() / 100
+            slider_pos = self.x_slider.value() / 10000
             x_min, x_max = np.min(self.current_x_data), np.max(self.current_x_data)
             x_value = x_min + slider_pos * (x_max - x_min)
             
@@ -423,7 +423,7 @@ class MainWindow(QMainWindow):
             return
         
         # Get current slider value and update intersection plot
-        slider_pos = self.x_slider.value() / 100
+        slider_pos = self.x_slider.value() / 10000
         x_min, x_max = np.min(self.current_x_data), np.max(self.current_x_data)
         x_value = x_min + slider_pos * (x_max - x_min)
         self.update_intersection_plot(x_value)
